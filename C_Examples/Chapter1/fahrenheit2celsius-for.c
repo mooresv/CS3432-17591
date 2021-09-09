@@ -1,9 +1,14 @@
+/* Alyssandra M. Cordero*/
 #include <stdio.h>
-
-main()
+/* convert: conversion from Fahrenheit to Celsius; performs opperation*/
+float convert(float fah){
+	float celsius;celsius = (5.0 / 9.0) * (fah -32)
+		return celsius;
+}
+/*test convert function*/
+void main()
 {
-	  int fahr;
-
-	  for (fahr = 0; fahr <= 300; fahr = fahr + 20)
-		    printf("%3d %6.1f\n", fahr, (5.0 / 9.0) * (fahr - 32));
+	float fahr; /*declaration*/
+	for (fahr = 0.0; fahr <= 300.0; fahr = fahr + 20.0)
+		printf("%3d %6.1f\n", fahr, convert(fahr));
 }
