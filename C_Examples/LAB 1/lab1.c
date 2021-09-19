@@ -5,7 +5,8 @@
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
 bool delim_character(char c){
-   return c==' '||c=='\t';
+   //return c==' '||c=='\t';
+   return c< '!';
  
 }
 
@@ -13,7 +14,8 @@ bool delim_character(char c){
    character (not tab or space).
    Zero terminators are not printable (therefore false) */
 bool non_delim_character(char c){
-   return c!=' ' && c!='\t';
+   //return c!=' ' && c!='\t';
+   return c> '!';
    
 }
 
@@ -38,19 +40,6 @@ char *word_start(char* str){
 /* Returns a pointer to the first space character of the zero
 terminated string*/
 char *end_word(char* str){
-   int i=0;
-   char*pa=NULL;
-   
-   while(str[i]!='\0'){
-      if(delim_character(str[i])){  
-         if(str[i+1]='\0')
-            pa= &str[i+1];
-         break;
-
-      }
-      i++;
-   }
-   return pa;
    
 }
 
@@ -68,7 +57,13 @@ int count_tokens(char* str){
      tokens[3] = 0
 */
 char *copy_str(char *inStr, short len){
-   
+    char* new_string  = (char*) malloc((len+1) * sizeof(char));
+    int i;
+    for(i=0; i<len; i++){
+        new_string[i]= inStr[i];
+    }
+    new_string[i]= '\0';
+    return new_string;
 }
 
 char** tokenize(char* str){
@@ -77,6 +72,7 @@ char** tokenize(char* str){
 
 
 void print_all_tokens(char** tokens){
+
    
 }
 
@@ -84,4 +80,6 @@ int main() {
 	  printf("%d\n", non_delim_character(' '));
 	  printf("%d\n", non_delim_character('a'));
 	  return(0);
+      //tokens = (char**) malloc(length * sizeof(char*));
+      //char* new_string = (char*) malloc(str_size * sizeof(char));
 }
