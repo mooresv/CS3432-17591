@@ -5,8 +5,7 @@
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
 bool delim_character(char c){
-   //return c==' '||c=='\t';
-   return c< '!';
+   return c==' '||c=='\t';
  
 }
 
@@ -14,8 +13,9 @@ bool delim_character(char c){
    character (not tab or space).
    Zero terminators are not printable (therefore false) */
 bool non_delim_character(char c){
-   //return c!=' ' && c!='\t';
-   return c> '!';
+   if(c==' ' || c=='\t' || c=='\0')
+    return 0;
+   return 1;
    
 }
 
@@ -46,8 +46,8 @@ char *end_word(char* str){
 // counts the number of words or tokens
 int count_tokens(char* str){
    
-
 }
+
 /* Returns a freshly allocated zero-terminated vector of freshly allocated
    space-separated tokens from zero-terminated str.
    For example, tokenize("hello world string") would result in:
@@ -62,12 +62,27 @@ char *copy_str(char *inStr, short len){
     for(i=0; i<len; i++){
         new_string[i]= inStr[i];
     }
-    new_string[i]= '\0';
+    new_string[len]= '\0';
     return new_string;
 }
 
 char** tokenize(char* str){
-   
+   int num_tokens = count_tokens(str);
+
+    char** tokens = (char**)malloc((num_tokens+1) * sizeof(char*));
+
+    int i;
+
+    for(i = 0; i<num_tokens; i++) {
+        char* first_letter = word_start(str);
+        str= word_terminator(first_letter);
+        int length= str - first_letter;
+        tokens[i] = copy_str(first_letter, length);
+
+    }
+
+    tokens[i]=NULL;
+    return tokens;
 }
 
 
@@ -77,9 +92,5 @@ void print_all_tokens(char** tokens){
 }
 
 int main() {
-	  printf("%d\n", non_delim_character(' '));
-	  printf("%d\n", non_delim_character('a'));
-	  return(0);
-      //tokens = (char**) malloc(length * sizeof(char*));
-      //char* new_string = (char*) malloc(str_size * sizeof(char));
+	  return (0);
 }
