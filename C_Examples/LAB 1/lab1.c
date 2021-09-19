@@ -5,6 +5,7 @@
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
 bool delim_character(char c){
+    return c==' '||c=='\t';
 
 }
 
