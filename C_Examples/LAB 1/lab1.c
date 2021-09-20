@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
 /* Return true (non-zero) if c is a whitespace characer
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
@@ -22,29 +23,51 @@ bool non_delim_character(char c){
 /* Returns a pointer to the first character of the next
    space-separated word*/
 char *word_start(char* str){
-   int i=0;
-   char*pa=NULL;
-   
-   while(str[i]!='\0'){
-      if(delim_character(str[i])){  
-         if(str[i+1]='\0')
-            pa= &str[i+1];
-         break;
+   int i;
+   for(i = 0; str[i] != '\0'; i++){
+      if(non_delim_character(str[i])){
+          return &str[i];
 
       }
-      i++;
-   }
-   return pa;
+	  
+	}
+    return &str[i];
+   
 }
 
 /* Returns a pointer to the first space character of the zero
 terminated string*/
 char *end_word(char* str){
+    int i;
+   for(i = 0; str[i] != '\0'; i++){
+      if(delim_character(str[i])){
+          return &str[i];
+
+      }
+	  
+	}
+    return &str[i];
    
 }
 
 // counts the number of words or tokens
 int count_tokens(char* str){
+    int ctr = 0;
+    while(*str != '\0'){
+        while(delim_character(*str)){
+            str++;
+        }
+
+        if(non_delim_character(*str)){
+            ctr++;
+        }
+        
+        while(non_delim_character(*str)){
+            str++;
+        }
+    }
+    
+    return ctr;
    
 }
 
@@ -75,7 +98,7 @@ char** tokenize(char* str){
 
     for(i = 0; i<num_tokens; i++) {
         char* first_letter = word_start(str);
-        str= word_terminator(first_letter);
+        str= end_word(first_letter);
         int length= str - first_letter;
         tokens[i] = copy_str(first_letter, length);
 
@@ -87,10 +110,14 @@ char** tokenize(char* str){
 
 
 void print_all_tokens(char** tokens){
+    for(int i = 0; tokens[i] != 0; i++){
+      printf("Token %d: %s\n", i, tokens[i]); 
+    }
 
    
 }
 
 int main() {
-	  return (0);
+    return(0);
 }
+
