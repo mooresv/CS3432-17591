@@ -7,7 +7,7 @@
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
 bool delim_character(char c){
-   return c==' '||c=='\t';
+   return c==' '||c=='\t'; 
  
 }
 
@@ -53,7 +53,7 @@ char *end_word(char* str){
 
 // counts the number of words or tokens
 int count_tokens(char* str){
-    int ctr = 0;
+    int ctr = 0; //counter
     while(*str != '\0'){
         while(delim_character(*str)){
             str++;
