@@ -93,6 +93,7 @@ char *copy_str(char *inStr, short len){
 }
 
 char** tokenize(char* str){
+   printf("does this even work?");
    int num_tokens = count_tokens(str);
 
     char** tokens = (char**)malloc((num_tokens+1) * sizeof(char*));
@@ -103,16 +104,19 @@ char** tokenize(char* str){
         char* first_letter = word_start(str);
         str= end_word(first_letter);
         int length= str - first_letter;
+        //printf("LENGTH: %d", length);
         tokens[i] = copy_str(first_letter, length);
 
     }
 
     tokens[i]=NULL;
+    print_all_tokens(tokens);
     return tokens;
 }
 
 
 void print_all_tokens(char** tokens){
+    printf("\n");
     for(int i = 0; tokens[i] != 0; i++){
       printf("Token %d: %s\n", i, tokens[i]); 
     }
@@ -122,8 +126,10 @@ void print_all_tokens(char** tokens){
 int main() {
 
     char words[500];
-    printf("\n Enter your input:");
+    printf("Enter your input: \n");
+    printf("$");
     fgets(words, 200, stdin);
+    printf("USER INPUT: %s",words);
     char**tokens= tokenize(words);
     return(0);
 }
