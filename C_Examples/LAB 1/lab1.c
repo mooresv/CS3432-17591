@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+
+
+
 /* Return true (non-zero) if c is a whitespace characer
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
@@ -113,11 +116,17 @@ void print_all_tokens(char** tokens){
     for(int i = 0; tokens[i] != 0; i++){
       printf("Token %d: %s\n", i, tokens[i]); 
     }
-
    
 }
 
 int main() {
+
+    char words[500];
+    printf("\n Enter your input:");
+    fgets(words, 200, stdin);
+    char**tokens= tokenize(words);
     return(0);
 }
+
+
 
