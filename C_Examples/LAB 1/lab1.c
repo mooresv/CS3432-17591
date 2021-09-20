@@ -3,8 +3,6 @@
 #include <stdbool.h>
 
 
-
-
 /* Return true (non-zero) if c is a whitespace characer
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
@@ -93,7 +91,6 @@ char *copy_str(char *inStr, short len){
 }
 
 char** tokenize(char* str){
-   printf("does this even work?");
    int num_tokens = count_tokens(str);
 
     char** tokens = (char**)malloc((num_tokens+1) * sizeof(char*));
@@ -110,7 +107,7 @@ char** tokenize(char* str){
     }
 
     tokens[i]=NULL;
-    print_all_tokens(tokens);
+    
     return tokens;
 }
 
@@ -131,6 +128,7 @@ int main() {
     fgets(words, 200, stdin);
     printf("USER INPUT: %s",words);
     char**tokens= tokenize(words);
+    print_all_tokens(tokens);
     return(0);
 }
 
