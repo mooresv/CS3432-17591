@@ -111,7 +111,7 @@ void print_all_tokens(char** tokens){
     int i;
     for(i = 0; tokens[i] != NULL; i++){
 
-      printf("Token [%d]: %s\n", i, tokens[i]); 
+      printf("Tokens [%d]: %s\n", i, tokens[i]); 
 
     }
     
@@ -126,7 +126,6 @@ int main() {
     //read input from the standard input stream and
     //store into string pointer
     fgets(words, 500, stdin); 
-    printf("USER INPUT: %s",words); //print the input of the user
 
     char**tokens= tokenize(words); 
     print_all_tokens(tokens);
