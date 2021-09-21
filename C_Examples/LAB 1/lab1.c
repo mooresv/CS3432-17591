@@ -24,47 +24,41 @@ bool non_delim_character(char c){
 /* Returns a pointer to the first character of the next
    space-separated word*/
 char *word_start(char* str){
-   int i;
-   for(i = 0; str[i] != '\0'; i++){
-      if(non_delim_character(str[i])){
-          return &str[i];
-
-      }
+    while(delim_character(*str)){  //until there are whitespaces keep moving
+          str++;
 	  
 	}
-    return &str[i];
+    return str;
+
+
    
 }
 
 /* Returns a pointer to the first space character of the zero
 terminated string*/
 char *end_word(char* str){
-    int i;
-   for(i = 0; str[i] != '\0'; i++){
-      if(delim_character(str[i])){
-          return &str[i];
-
-      }
-	  
-	}
-    return &str[i];
+    
+    while(non_delim_character(*str)){ //until there are non-whitespaces keep moving
+        str++;
+    }
+    return str;
    
 }
 
 // counts the number of words or tokens
 int count_tokens(char* str){
     int ctr = 0; //counter
-    while(*str != '\0'){
-        while(delim_character(*str)){
-            str++;
-        }
-
-        if(non_delim_character(*str)){
-            ctr++;
+    while(*str != '\0'){ //keep iterating while we are not in the end of string
+        while(delim_character(*str)){  
+            str++; //until there are white spaces keep moving
         }
         
-        while(non_delim_character(*str)){
-            str++;
+        if(non_delim_character(*str)){
+            ctr++; //increase counter when letter is founded
+        }
+        
+        while(non_delim_character(*str)){ //until there are non-white spaces keep moving
+            str++; 
         }
     }
     
@@ -81,19 +75,19 @@ int count_tokens(char* str){
      tokens[3] = 0
 */
 char *copy_str(char *inStr, short len){
-    char* new_string  = (char*) malloc((len+1) * sizeof(char));
-    int i;
+    char* new_string  = (char*) malloc((len+1) * sizeof(char)); //allocate memory for the new string
+    int i; 
     for(i=0; i<len; i++){
         new_string[i]= inStr[i];
     }
-    new_string[len]= '\0';
+    new_string[len]= '\0'; //last element as zero terminator
     return new_string;
 }
 
 char** tokenize(char* str){
    int num_tokens = count_tokens(str);
 
-    char** tokens = (char**)malloc((num_tokens+1) * sizeof(char*));
+    char** tokens = (char**)malloc((num_tokens+1) * sizeof(char*)); //allocate memory for the new string
 
     int i;
 
@@ -101,12 +95,12 @@ char** tokenize(char* str){
         char* first_letter = word_start(str);
         str= end_word(first_letter);
         int length= str - first_letter;
-        //printf("LENGTH: %d", length);
+        //printf("LENGTH: %d", length); //<-- check length of each letter
         tokens[i] = copy_str(first_letter, length);
 
     }
 
-    tokens[i]=NULL;
+    tokens[i]=NULL; 
     
     return tokens;
 }
@@ -114,9 +108,13 @@ char** tokenize(char* str){
 
 void print_all_tokens(char** tokens){
     printf("\n");
-    for(int i = 0; tokens[i] != 0; i++){
+    int i;
+    for(i = 0; tokens[i] != NULL; i++){
+
       printf("Token [%d]: %s\n", i, tokens[i]); 
+
     }
+    
    
 }
 
@@ -125,9 +123,12 @@ int main() {
     char words[500];
     printf("Enter your input: \n");
     printf("$");
-    fgets(words, 200, stdin);
-    printf("USER INPUT: %s",words);
-    char**tokens= tokenize(words);
+    //read input from the standard input stream and
+    //store into string pointer
+    fgets(words, 500, stdin); 
+    printf("USER INPUT: %s",words); //print the input of the user
+
+    char**tokens= tokenize(words); 
     print_all_tokens(tokens);
     return(0);
 }
