@@ -22,8 +22,9 @@ char** tokenize(char* str);
 void print_all_tokens(char** tokens,int numbtokens);
 
 void main(){
-  char a[40];// in relity it will inly print 40-1 characters dues to the \0 character
-  char *str = fgets(a,40,stdin);//gets char pointer to base of a string
+  printf("Please enter some text: ");
+  char a[50];// in relity it will only intake 50-1 characters dues to the \n character(enter)
+  char *str = fgets(a,50,stdin);//gets char pointer to base of a string
   int totalCount = count_tokens(str);//get the toal number of tokens
   
   char **p = tokenize(str);//just a temp pointer to not mess with original str
