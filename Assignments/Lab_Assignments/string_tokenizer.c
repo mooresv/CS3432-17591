@@ -37,7 +37,6 @@ char* word_start(char* str){
 			return NULL;
 		i++;
 	}
-	printf("%c\n :::", str[i]);
 	return &str[i]; //to return the pointer to start - specified & for return
 }
 
