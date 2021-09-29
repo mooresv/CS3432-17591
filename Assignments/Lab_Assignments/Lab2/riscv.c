@@ -23,8 +23,6 @@ void init_regs(){
 		reg[i] = i;
 }
 
-
-
 /**
  * Fill out this function and use it to read interpret user input to execute RV64 instructions.
  * You may expect that a single, properly formatted RISC-V instruction string will be passed
@@ -33,7 +31,6 @@ void init_regs(){
 bool interpret(char* instr){
 	return true;
 }
-
 
 /**
  * Simple demo program to show the usage of read_address() and write_address() found in memory.c
@@ -59,6 +56,7 @@ void write_read_demo(){
  * Your code goes in the main
  *
  */
+
 int main(){
 	// Do not write any code between init_regs
 	init_regs(); // DO NOT REMOVE THIS LINE
