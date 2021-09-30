@@ -107,20 +107,20 @@ void print_all_tokens(char** tokens){
 }
 
 /*main method*/
-int main(){
-arr = (char*) malloc(arrSize * sizeof(char));//declaring the array with the declared size
-printf("Please enter your text (40 char max. ): \n");
-fgets(arr, arrSize, stdin);
-printf("\n");
+//int main(){
+//arr = (char*) malloc(arrSize * sizeof(char));//declaring the array with the declared size
+//printf("Please enter your text (40 char max. ): \n");
+//fgets(arr, arrSize, stdin);
+//printf("\n");
 
 //token functionality
-printf("Output: \n");
+//printf("Output: \n");
 
-print_all_tokens(tokenize(arr));
+//print_all_tokens(tokenize(arr));
 
 //free allocated memory
-free(arr);
-free(tokens);
-return 0;
+//free(arr);
+//free(tokens);
+//return 0;
 
-}//end of main()
+//}//end of main()
