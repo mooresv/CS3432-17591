@@ -45,6 +45,16 @@ void init_regs(){
 	for(int i = 0; i < 32; i++)
 		reg[i] = i;
 }
+//print registers
+void print_regs(){
+	int col_size = 10;
+	for(int i = 0; i < 8; i++){
+		printf("X%02i:%.*lld", i, col_size, (long long int) reg[i]);
+		printf(" X%02i:%.*lld", i+8, col_size, (long long int) reg[i+8]);
+		printf(" X%02i:%.*lld", i+16, col_size, (long long int) reg[i+16]);
+		printf(" X%02i:%.*lld\n", i+24, col_size, (long long int) reg[i+24]);
+	}
+}
 //removes first character of a string or char array
 char* rm_first_char(char* original){
 	char* string_chopped = original+1;
@@ -153,14 +163,22 @@ void write_read_demo(){
  */
 
 int main(){
-	// Do not write any code between init_regs
-	init_regs(); // DO NOT REMOVE THIS LINE
-
-	// Below is a sample program to a write-read. Overwrite this with your own code.
-	write_read_demo();
-
-	printf("Please enter the RISCV instruction to perform - without parenthesis and each value separated by [ ] example: LW X7 1000 X5 instead of LW X7 1000(X5): \n");//asking user for instruction
-	fgets(input, input_size, stdin);
+// Do not write any code between init_regs
+init_regs(); // DO NOT REMOVE THIS LINE
+print_regs();
+// Below is a sample program to a write-read. Overwrite this with your own code.
+//write_read_demo();
+printf(" RV32 Interpreter.\nType RV32 instructions. Use upper-case letters and space as a delimiter.\nEnter 'EOF' character to end program\n");
+char* instruction = malloc(1000 * sizeof(char));
+bool is_null = false;
+// fgets() returns null if EOF is reached.
+is_null = fgets(instruction, 1000, stdin) == NULL;
+while(!is_null){
+	interpret(instruction);
 	printf("\n");
-	return 0;
+	print_regs();
+	printf("\n");
+	is_null = fgets(instruction, 1000, stdin) == NULL;
+}
+printf("Good bye!\n");
 }
