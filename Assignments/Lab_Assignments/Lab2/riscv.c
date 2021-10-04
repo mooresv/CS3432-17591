@@ -23,6 +23,10 @@ char* rd;
 char* rs1;
 char* rs2;
 char* imm;//it might be an address
+int rd_int;
+int rs1_int;
+int rs2_int;
+int imm_int;
 
 //Method declarations
 void init_regs();
@@ -51,27 +55,25 @@ char* rm_first_char(char* original){
 // For each ASCII character of the digit: subtract the code from '0' to get numerical value.
 int myAtoi(char* str)
 {
-    int res = 0;
-    bool sign = false;
+	int res = 0;
+	bool sign = false;
 	int i = 0;
-    if (str[0] == '-') {
-        sign = true;
-        i++;
-    }
- 
-    for (; str[i] != '\0'; ++i)
-        res = res * 10 + str[i] - '0';
- 
+	if (str[0] == '-') {
+		sign = true;
+		i++;
+	}
+	for (; str[i] != '\0'; ++i)
+		res = res * 10 + str[i] - '0';
 	if(sign){
 		return (res * -1); // Return negative result
 	}
-    return res;
+	return res;
 }
 //returns true if words are equal. given computarized length using sizeof(x)	
 bool compare_char_a(char* word_1, char* word_2, int comp_len){
 	int i;
 	for(i = 0; i < comp_len; i++){
-		if((word_1[i] == NULL)||(word_2[i] == NULL)){
+		if((word_1[i] == '\0')||(word_2[i] == '\0')){
 			return false;
 		}
 		if(word_1[i] != word_2[i]){
@@ -87,7 +89,7 @@ bool compare_char_a(char* word_1, char* word_2, int comp_len){
  */
 bool interpret(char* instr){//instr is user input string
 	instructions = tokenize(instr);//tokenize user input
-	if(instructions[0] == NULL){//checks if the double-array is empty
+	if(instructions[0] == '\0'){//checks if the double-array is empty
 		return false;
 	}
 	//if given the lw instruction
@@ -95,24 +97,33 @@ bool interpret(char* instr){//instr is user input string
 		//place holders:
 		char* mem_value;
 		char* new_location;
+		
 		//necessary variables for the instruction:
 		imm = instructions[3];
-		rs1 = instructions[2];
+		rs1_int = myAtoi(instructions[2]);
 		rd = instructions[1];
-		//remove unwanted chars:
+		
+		//remove unwanted chars 'X' and convert to int:
 		rd = rm_first_char(rd);
 		imm = rm_first_char(imm);
 		
-		mem_value = read_address(imm, "mem.txt");
-		new_location =
-		return true;
+		//convert values to integer
+		rd_int = myAtoi(rd);
+		imm_int = myAtoi(imm);
+		
+		//perform operation
+		mem_value = read_address(imm_int, "mem.txt");//getting value from memory
+		new_location = imm_int + rs1_int; //computing new destination for our value
+		reg[rd_int] = mem_value; //saving the value in register
+		
+		return true;//performed a successful operation
 	}
 	//if given the sw instruction
 	
 	//ADD AND ADDI INSTRUCTION
 	//if given the add instruction
 	//if given the addi instruction
-	return false;
+	return false; //exit, unsuccessful opearation
 }
 
 /**
