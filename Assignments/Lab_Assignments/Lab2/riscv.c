@@ -46,6 +46,27 @@ char* rm_first_char(char* original){
 	char* string_chopped = original+1;
 	return string_chopped;
 }
+// Iterate through all digits and parse to int.
+// value. multiply res by 10 to shuffle digits left.
+// For each ASCII character of the digit: subtract the code from '0' to get numerical value.
+int myAtoi(char* str)
+{
+    int res = 0;
+    bool sign = false;
+	int i = 0;
+    if (str[0] == '-') {
+        sign = true;
+        i++;
+    }
+ 
+    for (; str[i] != '\0'; ++i)
+        res = res * 10 + str[i] - '0';
+ 
+	if(sign){
+		return (res * -1); // Return negative result
+	}
+    return res;
+}
 //returns true if words are equal. given computarized length using sizeof(x)	
 bool compare_char_a(char* word_1, char* word_2, int comp_len){
 	int i;
