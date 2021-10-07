@@ -24,7 +24,7 @@ char* rd;
 char* rs1;
 char* rs2;
 char* imm;//it might be an address
-int32_t rd_int;
+int rd_int;
 int32_t rs1_int;
 int32_t rs2_int;
 int32_t imm_int;
@@ -85,6 +85,7 @@ bool compare_char_a(char* word_1, char* word_2, int comp_len){
  */
 bool interpret(char* instr){//instr is user input string
 	instructions = strtok(input, " ");//tokenize user input
+	printf("whats the instruction?:  \n%s\n", instructions[0]);
 	if(instructions[0] == '\0'){//checks if the double-array is empty
 		return false;
 	}
@@ -95,41 +96,44 @@ bool interpret(char* instr){//instr is user input string
 		rs1 = instructions[2];
 		rs2 = instructions[3];
 		//remove unwanted chars 'X' and convert to int
-		rd_int = int32_t(atoi(rm_first_char(rd)));
-		printf("read number:  \n%d\n",rd);
-		rs1_int = int32_t(atoi(rm_first_char(rs1)));
-		rs2_int = int32_t(atoi(rm_first_char(rs2)));
-		int32_t new_value = reg[rs1] + reg[rs2];
+		rd_int = atoi(rm_first_char(rd));
+		printf("read number:  \n%d\n",rd_int);
+		rs1_int = (int32_t) atoi(rm_first_char(rs1));
+		printf("read number:  \n%d\n",rs1_int);
+		rs2_int = (int32_t) atoi(rm_first_char(rs2));
+		printf("read number:  \n%d\n",rs2_int);
+		int32_t new_value = reg[rs1_int] + reg[rs2_int];
+		printf("tha sum:  \n%d\n", new_value);
 		//update contents of register
-		reg[rd] = new_value;
+		reg[rd_int] = new_value;
 	}
 	//if given the addi instruction
 	////if given the lw instruction
-	if((compare_char_a(lw, instructions[0], lw_array_size)) == (true) ){ //== REDUNDANT??
+//	if((compare_char_a(lw, instructions[0], lw_array_size)) == (true) ){ //== REDUNDANT??
 		//place holders:
-		char* mem_value;
-		char* new_location;
-		
+//		char* mem_value;
+//		char* new_location;
+//
 		//necessary variables for the instruction:
-		imm = instructions[3];
-		rs1_int = atoi(instructions[2]);
-		rd = instructions[1];
+//		imm = instructions[3];
+//		rs1_int = (int32_t) atoi(instructions[2]);
+//		rd = instructions[1];
 		
 		//remove unwanted chars 'X' and convert to int:
-		rd = rm_first_char(rd);
-		imm = rm_first_char(imm);
+//		rd = rm_first_char(rd);
+//		imm = rm_first_char(imm);
 		
 		//convert values to integer
-		rd_int = atoi(rd);
-		imm_int = atoi(imm);
+//		rd_int = (int32_t) atoi(rd);
+//		imm_int = (int32_t) atoi(imm);
 		
 		//perform operation
-		mem_value = read_address(imm_int, "mem.txt");//getting value from memory
-		new_location = imm_int + rs1_int; //computing new destination for our value
-		reg[rd_int] = mem_value; //saving the value in register
-		
-		return true;//performed a successful operation
-	}
+//		mem_value = read_address(imm_int, "mem.txt");//getting value from memory
+//		new_location = imm_int + rs1_int; //computing new destination for our value
+//		reg[rd_int] = mem_value; //saving the value in register
+//		
+//		return true;//performed a successful operation
+//	}
 	//if given the sw instruction
 	
 	return false; //exit, unsuccessful opearation
@@ -171,14 +175,13 @@ int main(){
 	bool is_null = false;
 	// fgets() returns null if EOF is reached.
 	is_null = fgets(input, 1000, stdin) == NULL;
-	while(!is_null){
-		interpret(input);
-		printf("\n");
-		print_regs();
-		printf("\n");
-		is_null = fgets(input, 1000, stdin) == NULL;
-	}
+//	while(!is_null){
+	interpret(input);
+//		printf("\n");
 	print_regs();
+//		printf("\n");
+//		is_null = fgets(input, 1000, stdin) == NULL;
+//	}
 //	fgets(input, input_size, stdin);
 	printf("Good bye!\n");
 	return 0;
