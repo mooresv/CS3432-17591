@@ -24,10 +24,10 @@ char* rd;
 char* rs1;
 char* rs2;
 char* imm;//it might be an address
-int32_t rd_int;
-int32_t rs1_int;
-int32_t rs2_int;
-int32_t imm_int;
+int rd_int;
+int rs1_int;
+int rs2_int;
+int imm_int;
 
 //Method declarations
 void init_regs();
@@ -64,7 +64,22 @@ char* rm_first_char(char* original){
 // Iterate through all digits and parse to int.
 // value. multiply res by 10 to shuffle digits left.
 // For each ASCII character of the digit: subtract the code from '0' to get numerical value.
-
+int myAtoi(char* str)
+{
+	int res = 0;
+	bool sign = false;
+	int i = 0;
+	if (str[0] == '-') {
+		sign = true;
+		i++;
+	}
+	for (; str[i] != '\0'; ++i)
+		res = res * 10 + str[i] - '0';
+	if(sign){
+		return (res * -1); // Return negative result
+	}
+	return res;
+}
 //returns true if words are equal. given computarized length using sizeof(x)	
 bool compare_char_a(char* word_1, char* word_2, int comp_len){
 	int i;
@@ -88,23 +103,7 @@ bool interpret(char* instr){//instr is user input string
 	if(instructions[0] == '\0'){//checks if the double-array is empty
 		return false;
 	}
-	//ADD AND ADDI INSTRUCTION
-	//if given the add instruction
-	if((compare_char_a(add, instructions[0], add_array_size)) == (true)){
-		rd = instructions[1];
-		rs1 = instructions[2];
-		rs2 = instructions[3];
-		//remove unwanted chars 'X' and convert to int
-		rd_int = int32_t(atoi(rm_first_char(rd)));
-		printf("read number:  \n%d\n",rd);
-		rs1_int = int32_t(atoi(rm_first_char(rs1)));
-		rs2_int = int32_t(atoi(rm_first_char(rs2)));
-		int32_t new_value = reg[rs1] + reg[rs2];
-		//update contents of register
-		reg[rd] = new_value;
-	}
-	//if given the addi instruction
-	////if given the lw instruction
+	//if given the lw instruction
 	if((compare_char_a(lw, instructions[0], lw_array_size)) == (true) ){ //== REDUNDANT??
 		//place holders:
 		char* mem_value;
@@ -112,7 +111,7 @@ bool interpret(char* instr){//instr is user input string
 		
 		//necessary variables for the instruction:
 		imm = instructions[3];
-		rs1_int = atoi(instructions[2]);
+		rs1_int = myAtoi(instructions[2]);
 		rd = instructions[1];
 		
 		//remove unwanted chars 'X' and convert to int:
@@ -120,8 +119,8 @@ bool interpret(char* instr){//instr is user input string
 		imm = rm_first_char(imm);
 		
 		//convert values to integer
-		rd_int = atoi(rd);
-		imm_int = atoi(imm);
+		rd_int = myAtoi(rd);
+		imm_int = myAtoi(imm);
 		
 		//perform operation
 		mem_value = read_address(imm_int, "mem.txt");//getting value from memory
@@ -132,6 +131,9 @@ bool interpret(char* instr){//instr is user input string
 	}
 	//if given the sw instruction
 	
+	//ADD AND ADDI INSTRUCTION
+	//if given the add instruction
+	//if given the addi instruction
 	return false; //exit, unsuccessful opearation
 }
 
