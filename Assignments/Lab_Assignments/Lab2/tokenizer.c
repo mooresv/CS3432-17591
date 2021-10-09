@@ -72,7 +72,7 @@ return n;
 char *copy_str(char *inStr, short len){
 	char *outStr = malloc((len) * sizeof(char));
 	int i = 0;
-	while (i < len){
+	while (i <= len){
 	outStr[i] = inStr[i]; // cp contents into new array
 	i++;
 	}

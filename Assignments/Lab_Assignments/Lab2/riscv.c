@@ -1,3 +1,4 @@
+//Alyssandra M. Cordero - LAB2
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -9,15 +10,8 @@
 int32_t* reg; // Array of 32 32-bit registers
 char* input; //Array of chars to store user input
 int input_size = 100; //size for input
-char* instructions; //array of tokens
-char lw[] = "LW";//words we are looking from first token
-char sw[] = "SW";
-char add[] = "ADD";
-char addi[] = "ADDI";
-const int lw_array_size = sizeof(lw)/sizeof(*lw);
-const int sw_array_size = sizeof(sw)/sizeof(*sw);
-const int add_array_size = sizeof(add)/sizeof(*add);
-const int addi_array_size = sizeof(addi)/sizeof(*addi);	
+char** instructions; //array of tokens
+bool is_done = false;
 //LW AND SW INSTRUCTIONS
 char* word_from_memory;
 char* rd;
@@ -45,7 +39,21 @@ void init_regs(){
 	reg = malloc(reg_amount * sizeof(int32_t)); // 32 * 4 bytes
 	for(int i = 0; i < 32; i++)
 		reg[i] = i;
-}
+}//END init_regs()!
+
+//check if two strings are equal
+bool equals(char* word_1, char* word_2){
+	bool is_equal = true;
+	while(is_equal && *word_1 != '\0'){
+		//An unmatched character found
+		if(*word_1 != *word_2)
+			is_equal = false;
+		++word_1;
+		++word_2;
+	}
+	return is_equal;
+}//END equals()!
+
 //print registers
 void print_regs(){
 	int col_size = 10;
@@ -56,91 +64,124 @@ void print_regs(){
 		printf(" X%02i:%.*lld\n", i+24, col_size, (long long int) reg[i+24]);
 	}
 }
+
 //removes first character of a string or char array
 char* rm_first_char(char* original){
 	char* string_chopped = original+1;
 	return string_chopped;
 }
+
 // Iterate through all digits and parse to int.
 // value. multiply res by 10 to shuffle digits left.
 // For each ASCII character of the digit: subtract the code from '0' to get numerical value.
 
-//returns true if words are equal. given computarized length using sizeof(x)	
-bool compare_char_a(char* word_1, char* word_2, int comp_len){
-	int i;
-	for(i = 0; i < comp_len; i++){
-		if((word_1[i] == '\0')||(word_2[i] == '\0')){
-			return false;
-		}
-		if(word_1[i] != word_2[i]){
-			return false;
-		}
-	}
-	return true;
-}
 /**
  * Fill out this function and use it to read interpret user input to execute RV64 instructions.
  * You may expect that a single, properly formatted RISC-V instruction string will be passed
  * as a parameter to this function.
  */
-bool interpret(char* instr){//instr is user input string
-	instructions = strtok(input, " ");//tokenize user input
-	printf("whats the instruction?:  \n%s\n", instructions[0]);
-	if(instructions[0] == '\0'){//checks if the double-array is empty
-		return false;
-	}
-	//ADD AND ADDI INSTRUCTION
-	//if given the add instruction
-	if((compare_char_a(add, instructions[0], add_array_size)) == (true)){
+//instr is user input string
+
+bool interpret(char* instr){
+	int suk;
+	bool successful_op = false; 
+	instructions = tokenize(instr);//tokenize user input
+	if(equals( "ADD", instructions[0])){
+		int32_t new_value;
 		rd = instructions[1];
 		rs1 = instructions[2];
 		rs2 = instructions[3];
-		//remove unwanted chars 'X' and convert to int
 		rd_int = atoi(rm_first_char(rd));
-		printf("read number:  \n%d\n",rd_int);
 		rs1_int = (int32_t) atoi(rm_first_char(rs1));
-		printf("read number:  \n%d\n",rs1_int);
 		rs2_int = (int32_t) atoi(rm_first_char(rs2));
-		printf("read number:  \n%d\n",rs2_int);
-		int32_t new_value = reg[rs1_int] + reg[rs2_int];
-		printf("tha sum:  \n%d\n", new_value);
-		//update contents of register
-		reg[rd_int] = new_value;
-	}
-	//if given the addi instruction
-	////if given the lw instruction
-//	if((compare_char_a(lw, instructions[0], lw_array_size)) == (true) ){ //== REDUNDANT??
-		//place holders:
-//		char* mem_value;
-//		char* new_location;
-//
-		//necessary variables for the instruction:
-//		imm = instructions[3];
-//		rs1_int = (int32_t) atoi(instructions[2]);
-//		rd = instructions[1];
-		
-		//remove unwanted chars 'X' and convert to int:
-//		rd = rm_first_char(rd);
-//		imm = rm_first_char(imm);
-		
-		//convert values to integer
-//		rd_int = (int32_t) atoi(rd);
-//		imm_int = (int32_t) atoi(imm);
-		
-		//perform operation
-//		mem_value = read_address(imm_int, "mem.txt");//getting value from memory
-//		new_location = imm_int + rs1_int; //computing new destination for our value
-//		reg[rd_int] = mem_value; //saving the value in register
-//		
-//		return true;//performed a successful operation
-//	}
-	//if given the sw instruction
+		new_value = reg[rs1_int] + reg[rs2_int];
+		reg[rd_int] = new_value;//update contents of register
+		successful_op = true;
+	}//END of ADD!
 	
-	return false; //exit, unsuccessful opearation
+	else if(equals("ADDI", instructions[0])){
+		int32_t new_value;
+
+		rd = instructions[1];
+		rs1 = instructions[2];
+		imm = instructions[3];
+		rd_int = atoi(rm_first_char(rd));
+		rs1_int = (int32_t) atoi(rm_first_char(rs1));
+		imm_int = (int32_t) atoi(rm_first_char(imm)); //MAY BE REGISTER
+		printf("rd:  \n%d\n",rd_int);
+		printf("rs1:  \n%d\n",rs1_int);
+		printf("imm:  \n%d\n",imm_int);
+
+		//perform opperation and save into destination reg
+		new_value = reg[rs1_int] + imm_int;
+		printf("new value:  \n%d\n",rs1_int);
+		reg[rd_int] = new_value;
+		successful_op = true;
+	}//END OF ADDI!
+
+	else if(equals("LW", instructions[0])){
+		printf("I am @lw: \n%s\n");	
+		//place holders:
+		int new_location;
+		int32_t value_in_reg;
+		int imm_lw;//OK!
+		//necessary variables for the instruction:
+		imm = instructions[3];
+		rs1_int = (int32_t) atoi(instructions[2]);
+		printf("rs1(off-set):  \n%d\n",rs1_int);
+		rd = instructions[1];
+		//remove unwanted chars 'X' and convert to int:
+		rd = rm_first_char(rd);
+		imm = rm_first_char(imm);
+		//convert values to integer
+		rd_int = atoi(rd);
+		imm_lw = atoi(imm);
+		printf("read number rd :  \n%d\n",rd_int);
+		printf("read number imm:  \n%d\n",imm_lw);
+		//perform operation
+		value_in_reg = reg[imm_lw];
+		new_location = value_in_reg + rs1_int; //computing new destination for our value
+		printf("new location:  \n%d\n", new_location);
+		reg[rd_int] = read_address(new_location, "mem.txt");//saving the value in register
+		successful_op = true;//performed a successful operation**
+	}//END OF LW!
+
+	else if(equals("SW", instructions[0])){
+		printf("I am @sw: \n%s\n");
+		int new_location;//memory_address
+		int32_t new_value;
+		int imm_sw;
+		int rd_sw;
+		//int32_t value_in_reg;
+		rd = instructions[1];
+		rs1 = instructions[2];
+		imm = instructions[3];
+
+		imm_sw = atoi(rm_first_char(imm));
+		rs1_int = (int32_t) atoi(rs1); //its always a constant
+		rd_sw = atoi(rm_first_char(rd));
+
+		printf("read number rd :  \n%d\n",rd_sw);
+		printf("read number imm :  \n%d\n",imm_sw);
+		printf("read number rs1 :  \n%d\n",rs1_int);
+		
+		new_location = reg[imm_sw] + rs1_int;
+		new_value = reg[rd_sw];
+		printf("NEW LOCATION :  \n%d\n",new_location);
+		printf("NEW VALUE :  \n%d\n",new_value);
+
+		write_address(new_value, new_location, "mem.txt");
+		printf("FINISHED! \n%s\n");
+		successful_op = true;
+	}//END OF SW!
+	else{
+		is_done = true;
+		printf("THAT INSTRUCTION DOES NOT EXISTS\n");//SUCCESSFUL_OP STILL FALSE
+	}
+	return successful_op;
 }
 
-/**
- * Simple demo program to show the usage of read_address() and write_address() found in memory.c
+ /* Simple demo program to show the usage of read_address() and write_address() found in memory.c
  * Before and after running this program, look at mem.txt to see how the values change.
  * Feel free to change "data_to_write" and "address" variables to see how these affect mem.txt
  * Use 0x before an int in C to hardcode it as text, but you may enter base 10 as you see fit.
@@ -171,18 +212,36 @@ int main(){
 	print_regs();
 	// Below is a sample program to a write-read. Overwrite this with your own code.
 	printf(" RV32 Interpreter.\nType RV32 instructions. Use upper-case letters and space as a delimiter.\nEnter 'EOF' character to end program\n");
-	input = malloc(1000 * sizeof(char));
+	
+	input = malloc(1000 * sizeof(char));//allocate memory for input
+	
 	bool is_null = false;
-	// fgets() returns null if EOF is reached.
-	is_null = fgets(input, 1000, stdin) == NULL;
-//	while(!is_null){
-	interpret(input);
-//		printf("\n");
-	print_regs();
-//		printf("\n");
-//		is_null = fgets(input, 1000, stdin) == NULL;
-//	}
-//	fgets(input, input_size, stdin);
+	//fgets() returns null if EOF is reached.
+		//while(!is_null){
+	//	interpret(input);
+
+	//is_null = fgets(input, 1000, stdin) == NULL;
+	//}
+	//fgets(input, input_size, stdin);
+	//bool is_done = false;  
+	while(!is_null && !is_done){//while input is NOT NULL
+//		printf("HEELLO!\n%s\n", *input);
+		//char* eof = "EOF";
+		//if(equals(eof, *input)){
+	//	//printf("ESTOY EN EOF!");
+		//	is_done = true;
+		//}else{
+		interpret(input);//if instruction exists
+		printf("\n");
+		print_regs();
+		printf("\n");	
+		is_null = fgets(input, 1000, stdin) == NULL;
+		//}
+		//else{
+	//	printf("ESTOY EN SIN INPUT\n");
+		//}
+	}
 	printf("Good bye!\n");
+	free(input);//free input
 	return 0;
 }
