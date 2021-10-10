@@ -77,15 +77,7 @@ bool interpret(char instr[]){
 	return accepted;
 }
 
-/* 
-	LW -> 0
-	SW -> 1
-	ADD -> 2
-	ADDI -> 3
-	AND -> 4
-	OR -> 5
-	XOR -> 6
-*/
+
 int mnemonic(char* is_mnemonic) {
 
 	// maps the instruction to its corresponding value
