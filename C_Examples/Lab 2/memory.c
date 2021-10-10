@@ -8,10 +8,10 @@
 
 // Read the 8 hex digit string and return as a 32-bit int
 int32_t read_address(int32_t address, char* file_name){
-	int32_t line_address = address / 4;
+	int32_t line_address = address / 2;
 	int32_t return_data;
 	FILE* mem_file;
-	char* str = malloc(50 * sizeof(char));
+	char* str = malloc(22 * sizeof(char));
 	char hex_str[9]; // 8 hex-digit string
 	str[20] = '\0';
 	hex_str[8] = '\0';
@@ -25,8 +25,8 @@ int32_t read_address(int32_t address, char* file_name){
 	int32_t line = 0;
 	bool done_searching = false;
 	do{
-		// For string: "0x00000000: 786F2EAB"
-		// grab only "786F2EAB" skipping over everything else
+		// For string: "0x00000000: 786F2EAB 53FB439A"
+		// grab only "786F2EAB53FB439A" skipping over everything else
 		char* line_str = fgets(str, 50, mem_file);
 		for(int i = 0; i < 8; i++){
 			if(i < 8)
@@ -38,9 +38,9 @@ int32_t read_address(int32_t address, char* file_name){
 		}
 		line++;
 	}while(!done_searching);
-
-	// Convert "786F2EAB53FB439A" and turn into int32_t
-	sscanf(hex_str, "%llX", (long long unsigned int*) &return_data);
+ 	free(str);
+	// Convert "786F2EAB53FB439A" and turn into int64_t
+	sscanf(hex_str, "%X", (unsigned int*) &return_data);
 	fclose(mem_file);
 	return return_data;
 }
@@ -48,11 +48,11 @@ int32_t read_address(int32_t address, char* file_name){
 
 // Write 32-bit int into mem file
 int32_t write_address(int32_t data, int32_t address, char* file_name){
-	int32_t line_address = address / 4;
+	int32_t line_address = address / 2;
 	FILE* mem_file;
 	FILE* temp_file;
 
-	char* str = malloc(50 * sizeof(char));
+	char* str = malloc(22 * sizeof(char));
 	str[21] = '\n';
 	str[21] = '\0';
 
@@ -65,7 +65,7 @@ int32_t write_address(int32_t data, int32_t address, char* file_name){
 		/* Unable to open file hence exit */
 		printf("\nUnable to open file.\n");
 		printf("Please check whether file exists and you have read/write privilege.\n");
-		return (int32_t) NULL;
+		return -1;
     	}
 
     	bool found_line = false;
@@ -81,6 +81,7 @@ int32_t write_address(int32_t data, int32_t address, char* file_name){
 			sprintf(upper_str, "%08X", upper_word);
 			strcpy(&str[12], upper_str);
 
+
 			str[20] = '\n';
 			fputs(str, temp_file);
 			found_line = true;
@@ -89,7 +90,7 @@ int32_t write_address(int32_t data, int32_t address, char* file_name){
 		}
 		line++;
     	}
-
+			//free(str);
     	// release resources back to OS
     	fclose(mem_file);
     	fclose(temp_file);
@@ -99,5 +100,5 @@ int32_t write_address(int32_t data, int32_t address, char* file_name){
 	if(found_line)
 		return data;
 	else
-		return (int32_t) NULL;
+		return -1;
 }

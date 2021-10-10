@@ -1,1 +1,1 @@
-char** tokenize(char* str, const char delim);
+char* tokenize(char* str, const char delim);
