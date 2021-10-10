@@ -4,8 +4,8 @@ void init_regs();
 
 bool interpret(char* instr);
 
-int interpret_helper(char* mnemonic);
+int mnemonic(char* mnemonic);
 
 void write_read_demo();
 
-char* remove_char(char* str, char c);
+char* remove_x(char* str);
