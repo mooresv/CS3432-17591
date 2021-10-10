@@ -16,7 +16,7 @@ int main(){
 
 // Constructs the memory line string and adds it at the appropriate address in mem.txt
 char* memory_str(int32_t address, int32_t data){
-	char* line_str = malloc(21 * sizeof(char));
+	char* line_str = malloc(22 * sizeof(char));
 	// line_str: "0x"
 	line_str[0] = '0';
 	line_str[1] = 'x';
@@ -25,7 +25,7 @@ char* memory_str(int32_t address, int32_t data){
 	// line_str: "0x00000008"
 	char addr_str[9];
 	// take the address int32_t convert it to a hex string with leading up to 8 leading zeroes
-	sprintf(addr_str, "%08lX", address);
+	sprintf(addr_str, "%08X", address);
 	strcpy((char*) &(line_str[2]), addr_str);
 
 	// line_str: "0x00000008: "
@@ -37,8 +37,9 @@ char* memory_str(int32_t address, int32_t data){
 
 
 	// line_str: "0x00000008: FFFFFFFF"
-	sprintf(upper_str, "%04X", upper_word);
+	sprintf(upper_str, "%08X", upper_word);
 	strcpy(&line_str[12], upper_str);
+
 
 	return line_str;
 }
@@ -60,7 +61,7 @@ void populate(int32_t max_words, char* file){
     		// creates 1 random 32-bit int a
     		int32_t data = ((int32_t)rand());
 
-    		char* mem_str = memory_str(i*4, data);
+    		char* mem_str = memory_str(i*2, data);
     		fputs(strcat(mem_str,"\n"), mem_file);
     	}
 
