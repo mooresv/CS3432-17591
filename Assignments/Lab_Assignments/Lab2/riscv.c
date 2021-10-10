@@ -64,24 +64,12 @@ void print_regs(){
 		printf(" X%02i:%.*lld\n", i+24, col_size, (long long int) reg[i+24]);
 	}
 }
-
 //removes first character of a string or char array
 char* rm_first_char(char* original){
 	char* string_chopped = original+1;
 	return string_chopped;
 }
-
-// Iterate through all digits and parse to int.
-// value. multiply res by 10 to shuffle digits left.
-// For each ASCII character of the digit: subtract the code from '0' to get numerical value.
-
-/**
- * Fill out this function and use it to read interpret user input to execute RV64 instructions.
- * You may expect that a single, properly formatted RISC-V instruction string will be passed
- * as a parameter to this function.
- */
-//instr is user input string
-
+// Read user input to execute RV32 instructions.
 bool interpret(char* instr){
 	int suk;
 	bool successful_op = false; 
@@ -201,11 +189,7 @@ void write_read_demo(){
 	printf("Read address %lu (0x%lX): %lu (0x%lX)\n", address, address, read, read); // %lu -> format as an long-unsigned
 }
 
-/**
- * Your code goes in the main
- *
- */
-
+//main
 int main(){
 	// Do not write any code between init_regs
 	init_regs(); // DO NOT REMOVE THIS LINE
@@ -216,30 +200,12 @@ int main(){
 	input = malloc(1000 * sizeof(char));//allocate memory for input
 	
 	bool is_null = false;
-	//fgets() returns null if EOF is reached.
-		//while(!is_null){
-	//	interpret(input);
-
-	//is_null = fgets(input, 1000, stdin) == NULL;
-	//}
-	//fgets(input, input_size, stdin);
-	//bool is_done = false;  
 	while(!is_null && !is_done){//while input is NOT NULL
-//		printf("HEELLO!\n%s\n", *input);
-		//char* eof = "EOF";
-		//if(equals(eof, *input)){
-	//	//printf("ESTOY EN EOF!");
-		//	is_done = true;
-		//}else{
 		interpret(input);//if instruction exists
 		printf("\n");
 		print_regs();
 		printf("\n");	
 		is_null = fgets(input, 1000, stdin) == NULL;
-		//}
-		//else{
-	//	printf("ESTOY EN SIN INPUT\n");
-		//}
 	}
 	printf("Good bye!\n");
 	free(input);//free input
