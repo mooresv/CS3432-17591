@@ -128,22 +128,22 @@ bool compare(char* str1, char* str2) {
 	Method that gets and adds the values from registers rs1 and rs2 and stores it in the destination register (rd)
 */
 void add(char* rd, char* rs1, char* rs2) {
-	int32_t rd_num = atoi(remove_x(rd)); // rd = destination register
-	int32_t rs1_num = atoi(remove_x(rs1)); // rs1 = base addres register 1
-	int32_t rs2_num = atoi(remove_x(rs2)); // rs2 = base addres register 2
+	int32_t rd_ = atoi(remove_x(rd)); // rd = destination register
+	int32_t rs1_ = atoi(remove_x(rs1)); // rs1 = base addres register 1
+	int32_t rs2_ = atoi(remove_x(rs2)); // rs2 = base addres register 2
 
-	reg[rd_num] = reg[rs1_num] + reg[rs2_num]; // rd = rs1 + rs2. E.g x1 = x2 + x3
+	reg[rd_] = reg[rs1_] + reg[rs2_]; // rd = rs1 + rs2
 }
 
 /*
 	Method that gets and adds the values from registers rs1 and imm and stores it in the destination register (rd)
 */
 void addi(char* rd, char* rs1, char* imm) {
-	int32_t rd_num = atoi(remove_x(rd));
-	int32_t rs1_num = atoi(remove_x(rs1));
-	int32_t imm_num = atoi(imm); // imm = immediate value
+	int32_t rd_ = atoi(remove_x(rd));
+	int32_t rs1_ = atoi(remove_x(rs1));
+	int32_t imm_ = atoi(imm); // imm = immediate value
 	
-	reg[rd_num] = reg[rs1_num] + imm_num; // rd = rs1 + imm. E.g x1 = x2 + 5
+	reg[rd_] = reg[rs1_] + imm_; // rd = rs1 + imm
 }
 
 /*
@@ -156,14 +156,14 @@ void lw(char* rd, char* rs1_imm) {
 	char* rs1 = tokens[1];
 	char* imm = tokens[0];
 
-	int32_t rd_num = atoi(remove_x(rd));
-	int32_t imm_num = atoi(imm); 
-	int32_t rs1_num = atoi(remove_x(rs1));
+	int32_t rd_ = atoi(remove_x(rd));
+	int32_t imm_ = atoi(imm); 
+	int32_t rs1_ = atoi(remove_x(rs1));
 
-	int32_t address = imm_num + reg[rs1_num]; // address = imm + rs1's value
+	int32_t address = imm_ + reg[rs1_]; // address = imm + rs1's value
 	int32_t data = read_address(address, MEMORY); // data = returns the memory's value using the address
 	
-	reg[rd_num] = data; // stores the memory's value into rd 
+	reg[rd_] = data; // stores the memory's value into rd 
 }
 
 /*
@@ -176,12 +176,12 @@ void sw(char* rd, char* rs1_imm) {
 	char* rs1 = tokens[1];
 	char* imm = tokens[0];
 
-	int32_t rd_num = atoi(remove_x(rd));
-	int32_t imm_num = atoi(imm); 
-	int32_t rs1_num = atoi(remove_x(rs1));
+	int32_t rd_ = atoi(remove_x(rd));
+	int32_t imm_ = atoi(imm); 
+	int32_t rs1_ = atoi(remove_x(rs1));
 
-	int32_t address = imm_num + reg[rs1_num]; // address = imm + rs1's value
-	int32_t data = reg[rd_num]; // data = rd
+	int32_t address = imm_ + reg[rs1_]; // address = imm + rs1's value
+	int32_t data = reg[rd_]; // data = rd
 
 	write_address(data, address, MEMORY); // stores rd's value into memory's address
 }
@@ -190,33 +190,33 @@ void sw(char* rd, char* rs1_imm) {
 	Method that gets and ANDs the values from registers rs1 and rs2 and stores it in the destination register (rd)
 */
 void and(char* rd, char* rs1, char* rs2) {
-	int32_t rd_num = atoi(remove_x(rd));
-	int32_t rs1_num = atoi(remove_x(rs1));
-	int32_t rs2_num = atoi(remove_x(rs2));
+	int32_t rd_ = atoi(remove_x(rd));
+	int32_t rs1_ = atoi(remove_x(rs1));
+	int32_t rs2_ = atoi(remove_x(rs2));
 
-	reg[rd_num] = reg[rs1_num] & reg[rs2_num]; // rd = rs1 & rs2 
+	reg[rd_] = reg[rs1_] & reg[rs2_]; // rd = rs1 & rs2 
 }
 
 /*
 	Method that gets and ORs the values from registers rs1 and rs2 and stores it in the destination register (rd)
 */
 void or(char* rd, char* rs1, char* rs2) {
-	int32_t rd_num = atoi(remove_x(rd));
-	int32_t rs1_num = atoi(remove_x(rs1));
-	int32_t rs2_num = atoi(remove_x(rs2));
+	int32_t rd_ = atoi(remove_x(rd));
+	int32_t rs1_ = atoi(remove_x(rs1));
+	int32_t rs2_ = atoi(remove_x(rs2));
 
-	reg[rd_num] = reg[rs1_num] | reg[rs2_num]; // rd = rs1 | rs2 
+	reg[rd_] = reg[rs1_] | reg[rs2_]; // rd = rs1 | rs2 
 }
 
 /*
 	Method that gets and XORs the values from registers rs1 and rs2 and stores it in the destination register (rd)
 */
 void xor(char* rd, char* rs1, char* rs2) {
-	int32_t rd_num = atoi(remove_x(rd));
-	int32_t rs1_num = atoi(remove_x(rs1));
-	int32_t rs2_num = atoi(remove_x(rs2));
+	int32_t rd_ = atoi(remove_x(rd));
+	int32_t rs1_ = atoi(remove_x(rs1));
+	int32_t rs2_ = atoi(remove_x(rs2));
 
-	reg[rd_num] = reg[rs1_num] ^ reg[rs2_num]; // rd = rs1 XOR (^) rs2 
+	reg[rd_] = reg[rs1_] ^ reg[rs2_]; // rd = rs1 ^ rs2 
 }
 
 /**
