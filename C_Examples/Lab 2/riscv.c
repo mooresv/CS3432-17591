@@ -125,7 +125,7 @@ bool compare(char* str1, char* str2) {
 }
 
 /*
-	Method that gets and adds the values from registers rs1 and rs2 and stores it in the destination register (rd)
+   adds values from registers rs1 and rs2 and stores it in the destination register (rd)
 */
 void add(char* rd, char* rs1, char* rs2) {
 	int32_t rd_ = atoi(remove_x(rd)); // rd = destination register
@@ -136,7 +136,8 @@ void add(char* rd, char* rs1, char* rs2) {
 }
 
 /*
-	Method that gets and adds the values from registers rs1 and imm and stores it in the destination register (rd)
+    gets and adds the values from registers rs1 and imm
+    store values in the destination register (rd)
 */
 void addi(char* rd, char* rs1, char* imm) {
 	int32_t rd_ = atoi(remove_x(rd));
@@ -147,7 +148,8 @@ void addi(char* rd, char* rs1, char* imm) {
 }
 
 /*
-	lw (load word) loads a word from memory to a register.
+	lw, take the value stored in the memory address
+	replace the content of a register with the value taken from the memory address
 */
 void lw(char* rd, char* rs1_imm) {
 	char** tokens = tokenize(rs1_imm, '('); // creates tokens using open parenthesis as delim
@@ -167,7 +169,8 @@ void lw(char* rd, char* rs1_imm) {
 }
 
 /*
-	sw (store word) stores a register into memory.
+	sw, take the value stored in a register and find the address.
+	replace the content of the adress in memory by the content of the register previosuly mentioned
 */
 void sw(char* rd, char* rs1_imm) {
 	char** tokens = tokenize(rs1_imm, '('); // creates tokens using open parenthesis as delim
@@ -187,7 +190,7 @@ void sw(char* rd, char* rs1_imm) {
 }
 
 /*
-	Method that gets and ANDs the values from registers rs1 and rs2 and stores it in the destination register (rd)
+     And  values from registers rs1 and rs2 and stores it in the destination register/ rd
 */
 void and(char* rd, char* rs1, char* rs2) {
 	int32_t rd_ = atoi(remove_x(rd));
@@ -198,7 +201,7 @@ void and(char* rd, char* rs1, char* rs2) {
 }
 
 /*
-	Method that gets and ORs the values from registers rs1 and rs2 and stores it in the destination register (rd)
+	 Or  values from registers rs1 and rs2 and stores it in the destination register/ rd
 */
 void or(char* rd, char* rs1, char* rs2) {
 	int32_t rd_ = atoi(remove_x(rd));
@@ -209,7 +212,7 @@ void or(char* rd, char* rs1, char* rs2) {
 }
 
 /*
-	Method that gets and XORs the values from registers rs1 and rs2 and stores it in the destination register (rd)
+	Xor values from registers rs1 and rs2 and stores it in the destination register/ rd
 */
 void xor(char* rd, char* rs1, char* rs2) {
 	int32_t rd_ = atoi(remove_x(rd));
