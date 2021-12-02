@@ -25,25 +25,24 @@ uintptr_t handle_trap(uintptr_t epc, uintptr_t cause, uintptr_t tval, uintptr_t
   printf("my traps\n");
 
   if (code == 11) {
+    _exit(code);
+    _builtin_unreachable();
+  } 
+  if (regs[10] == 10){
 
-    if (regs[10] == 10){
-
-      _exit(0);
-    }
-    else if(regs[10] == 1){
-      printf("%lu\n",(long int)regs[11]);
-    }
-    else if(regs[10] == 9){
-      return (uintptr_t)malloc(regs[11]);
-    }
-    else if(regs[10] == 11){
-      printf("%c\n",(char)regs[11]);
-    }
-
+    _exit(0);
   }
-
-  _exit(code);
-
-  __builtin_unreachable();
+  else if(regs[10] == 1){
+     printf("%lu\n",(long int)regs[11]);
+  }
+  else if(regs[10] == 9){
+      return (uintptr_t)malloc(regs[11]);
+  }
+  else if(regs[10] == 11){
+      printf("%c\n",(char)regs[11]);
+  }else{
+    _exit(code);
+    _builtin_unreachable();
+  }
 
 }
